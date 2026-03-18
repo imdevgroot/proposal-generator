@@ -228,6 +228,9 @@
   font-size: 0.85rem;
   cursor: pointer;
   transition: opacity 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 7px;
 }
 
 .btnPrimary:hover {
@@ -296,8 +299,50 @@
   border-radius: 4px;
 }
 
+/* ── Mobile Tabs ── */
+.mobileTabs {
+  display: none;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #111;
+  border-bottom: 1px solid #2e2e2e;
+  padding: 10px 16px;
+  gap: 8px;
+}
+
+.mobileTab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #333;
+  background: #1a1a1a;
+  color: #888;
+  transition: all 0.15s;
+}
+
+.mobileTabActive {
+  background: #d4af37;
+  color: #111;
+  border-color: #d4af37;
+}
+
+.mobileHidden {
+  display: none !important;
+}
+
 /* ── Mobile ── */
 @media (max-width: 768px) {
+  .mobileTabs {
+    display: flex;
+  }
   .root {
     flex-direction: column;
     height: auto;
@@ -319,6 +364,11 @@
   }
   .actions {
     flex-wrap: wrap;
+  }
+  .btnPrimary, .btnSecondary, .btnGhost {
+    display: flex;
+    align-items: center;
+    gap: 7px;
   }
 }
 

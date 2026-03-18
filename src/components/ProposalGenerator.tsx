@@ -82,7 +82,7 @@ export const NICHES = [
   "Photography",
   "Plumbing",
   "Real Estate",
-  "Restaurant / Café",
+  "Restaurant / Cafe",
   "Roofing",
   "Tattoo Studio",
   "Towing / Auto",
@@ -109,11 +109,61 @@ export function calcTotal(data: ProposalData) {
   return { base, addonTotal, total: base + addonTotal };
 }
 
+// SVG Icons
+function CopyIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+    </svg>
+  );
+}
+
+function PrintIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>
+    </svg>
+  );
+}
+
+function SaveIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
+    </svg>
+  );
+}
+
+function FolderIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+    </svg>
+  );
+}
+
+function FormIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+    </svg>
+  );
+}
+
+function PreviewIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+    </svg>
+  );
+}
+
 export default function ProposalGenerator() {
   const [data, setData] = useState<ProposalData>(defaultData);
   const [saved, setSaved] = useState<{ ts: number; data: ProposalData }[]>([]);
   const [showSaved, setShowSaved] = useState(false);
   const [copyMsg, setCopyMsg] = useState("");
+  const [mobileTab, setMobileTab] = useState<"form" | "preview">("form");
   const previewRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -153,37 +203,37 @@ export default function ProposalGenerator() {
     const pkg = PACKAGES[data.pkg];
     const addonLines = Object.entries(ADDONS)
       .filter(([k]) => data.addons[k as keyof typeof data.addons])
-      .map(([, v]) => `  • ${v.label}: +$${v.price}${v.suffix}`)
+      .map(([, v]) => `  - ${v.label}: +$${v.price}${v.suffix}`)
       .join("\n");
 
     const text = `Hi ${data.ownerFirstName || "[Owner]"},
 
 Thanks for your interest in getting a professional website for ${data.businessName || "[Business]"}!
 
-I'd love to help ${data.businessName || "your business"} stand out online. Here's a custom proposal I put together for you:
+I would love to help ${data.businessName || "your business"} stand out online. Here is a custom proposal I put together for you:
 
 ---
 WEBSITE PROPOSAL FOR ${(data.businessName || "[Business]").toUpperCase()}
 Prepared by NuPeeks | nupeeks@outlook.com
 ---
 
-📦 PACKAGE: ${pkg.name} — $${base}
-${pkg.features.map((f) => `  ✓ ${f}`).join("\n")}
-${addonLines ? `\n🔧 ADD-ONS:\n${addonLines}` : ""}
+PACKAGE: ${pkg.name} — $${base}
+${pkg.features.map((f) => `  - ${f}`).join("\n")}
+${addonLines ? `\nADD-ONS:\n${addonLines}` : ""}
 
-💰 PRICING BREAKDOWN:
+PRICING BREAKDOWN:
   Base Package: $${base}${addonTotal ? `\n  Add-ons: +$${addonTotal}` : ""}
-  ─────────────────
+  -----------------
   TOTAL: $${total}
 
-📅 TIMELINE: 3–5 business days (rush available)
+TIMELINE: 3-5 business days (rush available)
 
-💳 PAYMENT:
+PAYMENT:
   50% upfront: $${Math.round(total / 2)}
   50% on launch: $${Math.round(total / 2)}
 
-✅ GUARANTEE: Unlimited revisions until you're 100% happy with the design.
-${data.demoUrl ? `\n🌐 DEMO SITE: ${data.demoUrl}` : ""}
+GUARANTEE: Unlimited revisions until you are 100% happy with the design.
+${data.demoUrl ? `\nDEMO SITE: ${data.demoUrl}` : ""}
 
 Ready to get started? Reply to this message or reach me at nupeeks@outlook.com
 
@@ -203,8 +253,24 @@ nupeeks@outlook.com
 
   return (
     <div className={styles.root}>
+      {/* Mobile Tab Toggle */}
+      <div className={styles.mobileTabs}>
+        <button
+          className={`${styles.mobileTab} ${mobileTab === "form" ? styles.mobileTabActive : ""}`}
+          onClick={() => setMobileTab("form")}
+        >
+          <FormIcon /> Form
+        </button>
+        <button
+          className={`${styles.mobileTab} ${mobileTab === "preview" ? styles.mobileTabActive : ""}`}
+          onClick={() => setMobileTab("preview")}
+        >
+          <PreviewIcon /> Preview
+        </button>
+      </div>
+
       {/* LEFT: Form */}
-      <div className={`${styles.formPanel} no-print animate-fade-in`}>
+      <div className={`${styles.formPanel} no-print animate-fade-in ${mobileTab === "preview" ? styles.mobileHidden : ""}`}>
         <div className={styles.formHeader}>
           <span className={styles.logo}>NuPeeks</span>
           <span className={styles.subtitle}>Proposal Generator</span>
@@ -239,7 +305,7 @@ nupeeks@outlook.com
                   value={data.niche}
                   onChange={(e) => update("niche", e.target.value)}
                 >
-                  <option value="">Select niche…</option>
+                  <option value="">Select niche...</option>
                   {NICHES.map((n) => (
                     <option key={n} value={n}>
                       {n}
@@ -286,7 +352,7 @@ nupeeks@outlook.com
                     <div className={styles.pkgNameRow}>
                       <strong>{pkg.name}</strong>
                       {"popular" in pkg && pkg.popular && (
-                        <span className={styles.badge}>★ Most Popular</span>
+                        <span className={styles.badge}>Most Popular</span>
                       )}
                       <span className={styles.pkgPrice}>${pkg.price}</span>
                     </div>
@@ -329,22 +395,22 @@ nupeeks@outlook.com
           {/* Actions */}
           <div className={styles.actions}>
             <button className={styles.btnPrimary} onClick={copyEmail}>
-              📋 Copy as Email
+              <CopyIcon /> Copy as Email
             </button>
             <button
               className={styles.btnSecondary}
               onClick={() => window.print()}
             >
-              🖨 Print / Save PDF
+              <PrintIcon /> Print / PDF
             </button>
             <button className={styles.btnSecondary} onClick={saveProposal}>
-              💾 Save
+              <SaveIcon /> Save
             </button>
             <button
               className={styles.btnGhost}
               onClick={() => setShowSaved(!showSaved)}
             >
-              📂 Saved ({saved.length})
+              <FolderIcon /> Saved ({saved.length})
             </button>
           </div>
 
@@ -361,7 +427,10 @@ nupeeks@outlook.com
       </div>
 
       {/* RIGHT: Preview */}
-      <div className={`${styles.previewPanel} animate-fade-in`} ref={previewRef}>
+      <div
+        className={`${styles.previewPanel} animate-fade-in ${mobileTab === "form" ? styles.mobileHidden : ""}`}
+        ref={previewRef}
+      >
         <ProposalPreview data={data} />
       </div>
     </div>
